@@ -1,0 +1,24 @@
+{
+  "name": "supreme-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "cherio": "^1.0.0-rc.2",
+    "electron": "^3.0.10",
+    "needle": "^2.2.4",
+    "querystring": "^0.2.0",
+    "request": "git+https://github.com/request/request.git",
+    "request-cookies": "^1.1.0",
+    "request-promise": "^4.2.2",
+    "supreme-api": "^1.0.6",
+    "tough-cookie-filestore": "0.0.1"
+  }
+}
