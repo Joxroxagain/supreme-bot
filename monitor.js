@@ -17,7 +17,6 @@ module.exports = class Monitor {
 
     start() {
 
-        console.log('Now watching for items');
         watchOnAllItems = setInterval(function () {
             supreme.getNewItems(function (thisReturn) {
                 if (previousReturn == null) {
