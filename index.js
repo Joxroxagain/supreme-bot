@@ -33,6 +33,11 @@ addMonitors(1);
 // addBots(5);
 startAll();
 
+for (let i = 0; i < monitors.length; i++) {
+  monitors[i].stop(function () {
+    console.log("DONE!")
+  });
+}
 
 ///////TESTING/////////
 

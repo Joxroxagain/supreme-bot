@@ -1,7 +1,7 @@
 var cheerio = require('cheerio');
 var request = require('request');
 var querystring = require('querystring');
-const supreme = require('./api.js');
+const api = require('./api.js');
 var notifier = require('./notifier.js')
 
 var watchOnAllItems = [];
@@ -16,23 +16,25 @@ module.exports = class Monitor {
     }
 
     start() {
+        console.log("started watching for items!")
 
         watchOnAllItems = setInterval(function () {
-            supreme.getNewItems(function (thisReturn) {
+            api.getNewItems(function (thisReturn) {
                 if (previousReturn == null) {
                     previousReturn = thisReturn;
                 } else {
-                    if(JSON.stringify(previousReturn) == JSON.stringify(thisReturn))
+                    if(JSON.stringify(previousReturn) == JSON.stringify(thisReturn)) {
                         console.log("SAME THING!")
+                    } else {
+                        console.log("NEW ITEMS! OMG")
+                    }
                 }
-
-
             });
         }, 1000 * this.refreshInterval); // Every xx sec
 
     }
 
-    stop() {
+    stop(callback) {
         clearInterval(watchOnAllItems);
         if (watchOnAllItems == "") {
             callback(null, 'No watching processes found.');
