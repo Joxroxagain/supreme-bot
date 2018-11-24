@@ -24,136 +24,14 @@ String.prototype.capitalizeEachWord = function () {
  * @return {Array}
  */
 
-api.getItems = function (category, callback) {
-
-    var getURL = api.url + '/shop/all/' + category;
-    if (category == 'all') {
-        getURL = api.url + '/shop/all';
-    } else if (category == 'new') {
-        getURL = api.url + '/shop/new';
-    }
-
-    request(getURL, function (err, resp, html, rrr, body) {
-
-        if (!err) {
-            if (err) {
-                console.log('err')
-                return callback('No response from website', null);
-            } else {
-                var $ = cheerio.load(html);
-            }
-
-            var count = $('img').length;
-
-            if ($('.shop-closed').length > 0) {
-                return callback('Store Closed', null);
-            } else if (count === 0) {
-                return callback('Store Closed', null);
-            }
-
-            var parsedResults = [];
-
-
-            $('img').each(function (i, element) {
-
-                var nextElement = $(this).next();
-                var prevElement = $(this).prev();
-                var image = "https://" + $(this).attr('src').substring(2);
-                var title = $(this).attr('alt');
-                var availability = nextElement.text().capitalizeEachWord();
-                var link = api.url + this.parent.attribs.href;
-                var sizesAvailable;
-
-
-                if (availability == "") availability = "Available";
-
-                request(link, function (err, resp, html, rrr, body) {
-
-                    if (err) {
-                        return callback('No response from website', null);
-                    } else {
-                        var $ = cheerio.load(html);
-                    }
-
-                    var addCartURL = api.url + $('form[id="cart-addf"]').attr('action');
-                    addCartURL += '.json'; // Mobile endpoint
-
-                    if (availability == "Sold Out") {
-                        addCartURL = null;
-                    }
-
-                    var sizeOptionsAvailable = [];
-                    if ($('option')) {
-                        $('option').each(function (i, elem) {
-                            var size = {
-                                id: parseInt($(this).attr('value')),
-                                size: $(this).text(),
-                            }
-                            sizeOptionsAvailable.push(size);
-                        });
-
-                        if (sizeOptionsAvailable.length > 0) {
-                            sizesAvailable = sizeOptionsAvailable
-                        } else {
-                            sizesAvailable = null
-                        }
-                    } else {
-                        sizesAvailable = null;
-                    }
-
-                    var metadata = {
-                        title: $('h1').attr('itemprop', 'name').eq(1).html(),
-                        style: $('.style').attr('itemprop', 'model').text(),
-                        link: link,
-                        description: $('.description').text(),
-                        addCartURL: addCartURL,
-                        price: parseInt(($('.price')[0].children[0].children[0].data).replace('$', '').replace(',', '')),
-                        image: image,
-                        sizesAvailable: sizesAvailable,
-                        images: [],
-                        availability: availability
-                    };
-
-                    // Some items don't have extra images (like some of the skateboards)
-                    if ($('.styles').length > 0) {
-                        var styles = $('.styles')[0].children;
-                        for (li in styles) {
-                            for (a in styles[li].children) {
-                                if (styles[li].children[a].attribs['data-style-name'] == metadata.style) {
-                                    metadata.images.push('https:' + JSON.parse(styles[li].children[a].attribs['data-images']).zoomed_url)
-                                }
-                            }
-                        }
-                    } else if (title.indexOf('Skateboard') != -1) {
-                        // Because skateboards
-                        metadata.images.push('https:' + $('#img-main').attr('src'))
-                    }
-
-                    parsedResults.push(metadata);
-
-                    if (!--count) {
-                        callback(parsedResults, null);
-                    }
-
-                })
-
-            });
-        } else {
-            return callback('No response from website', null);
-        }
-    });
-};
-
 api.getNewItems = function (callback) {
 
-    var getURL = api.mobileEndpoint;
-
-    request(getURL, function (err, resp, html, rrr, body) {
+    request(api.mobileEndpoint, function (err, resp, html, rrr, body) {
 
         if (!err) {
-            const json = JSON.parse(resp.body)
-            console.log(json);
-            callback(json);
+            const json = JSON.parse(resp.body);
+            console.log(json.products_and_categories.new);
+            callback(json.products_and_categories.new);
         } else {
             return callback('No response from website', null);
         }

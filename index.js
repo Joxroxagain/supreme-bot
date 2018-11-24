@@ -3,7 +3,6 @@ const test = require('./test.js');
 const Monitor = require("./monitor");
 const supreme = require('./api.js');
 
-
 var bots = [];
 var monitors = [];
 
@@ -33,11 +32,6 @@ addMonitors(1);
 // addBots(5);
 startAll();
 
-for (let i = 0; i < monitors.length; i++) {
-  monitors[i].stop(function () {
-    console.log("DONE!")
-  });
-}
 
 ///////TESTING/////////
 
