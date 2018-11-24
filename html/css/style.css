@@ -52,6 +52,20 @@ a, a:hover, a:focus {
     perspective: 1500px;
 }
 
+#logo-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    /* width: 100%; */
+    pointer-events: none;
+}
+
+.sidebar-header {
+    height: 128px;
+    width: 128px;
+}
+
 
 #sidebar {
     min-width: 250px;
@@ -65,10 +79,6 @@ a, a:hover, a:focus {
 #sidebar.active {
     margin-left: -250px;
     transform: rotateY(100deg);
-}
-
-#sidebar .sidebar-header {
-    padding: 20px;
 }
 
 #sidebar ul.components {

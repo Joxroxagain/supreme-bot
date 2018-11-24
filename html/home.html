@@ -1,4 +1,5 @@
-<div class="row">
+<!-- Sample drtopdown buttons with bootstrap -->
+<div class="pb-4 row">
   <div class="col-6">
     <div class="btn-group">
       <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -27,61 +28,33 @@
   </div>
 </div>
 
-<div class="container">
-  <div id="slider-pips" class="noUi-target noUi-ltr noUi-horizontal" data-toggle="tooltip" data-placement="top" title="Select sizes">
-    <div class="noUi-connect" style="transform: translate(10%, 0px) scale(0, 1);"></div>
-  </div>
+<!-- Number spionner for choosing how many bots to create -->
+<div class="pb-4 row">
+    <div class="col-6">
+        <input class="form-control" type="number" value="1" min="1" max="10">
+    </div>
+    <div class="col-6">
+
+    </div>
+
 </div>
 
+<!-- Size selector - no need to modify -->
+<div id="slider-pips" class="noUi-target noUi-ltr noUi-horizontal" data-toggle="tooltip" data-placement="top" title="Select sizes">
+  <div class="noUi-connect" style="transform: translate(10%, 0px) scale(0, 1);"></div>
+</div>
 
 
 <div class="container">
   <button id='launch' type="button" class="btn btn-outline-primary vbottom mb-5">Launch Tasks</button>
 </div>
 
+<!----------------
+Scripts
+ ---------------->
 
-<script>
-  var noUiSlider = require("nouislider");
-  var ipcRenderer = require("electron").ipcRenderer;
+<!-- For number picker -->
+<script src="./js/bootstrap-number-input.js"></script>
 
-  document.getElementById("launch").addEventListener("click", function () {
-    ipcRenderer.send('start-bot');
-  });
-
-
-  var pipsSlider = document.getElementById('slider-pips');
-
-  noUiSlider.create(pipsSlider, {
-    range: {
-      // Starting at 500, step the value by 500,
-      // until 4000 is reached. From there, step by 1000.
-      'min': [4],
-      'max': [17]
-    },
-    connect: true,
-    step: .5,
-    start: [4, 19],
-    pips: {
-      mode: 'count',
-      values: 14,
-      density: 4,
-      stepped: true
-    }
-  });
-
-  var pips = pipsSlider.querySelectorAll('.noUi-value');
-
-  function clickOnPip() {
-    var value = Number(this.getAttribute('data-value'));
-    pipsSlider.noUiSlider.set(value);
-  }
-
-  for (var i = 0; i < pips.length; i++) {
-
-    // For this example. Do this in CSS!
-    pips[i].style.cursor = 'pointer';
-    pips[i].addEventListener('click', clickOnPip);
-  }
-
-
-</script>
+<!-- No UI slider -->
+<script src="./js/no-ui-slider.js"></script>

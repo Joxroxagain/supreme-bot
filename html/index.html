@@ -17,7 +17,7 @@
         window.$ = window.jQuery = require('jquery');
         window.Bootstrap = require('bootstrap');
     </script>
-    
+
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
@@ -46,7 +46,8 @@
         <!-- Sidebar Holder -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3>AdiZap</h3>
+                <!-- <h3>Scurry</h3> -->
+                <img id='logo-img' src='./img/mouse-icon2.jpg'/>
             </div>
 
             <ul class="list-unstyled components">
@@ -68,6 +69,7 @@
         <!-- Page Content Holder -->
         <div id="content">
 
+            <!-- Where the router will display pages -->
             <div ng-view></div>
 
         </div>
