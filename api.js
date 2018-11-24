@@ -5,6 +5,7 @@ var querystring = require('querystring');
 var api = {};
 
 api.url = 'http://www.supremenewyork.com';
+api.mobileEndpoint = api.url + '/mobile_stock.json';
 
 String.prototype.capitalizeEachWord = function () {
     return this.replace(/\w\S*/g, function (txt) {
@@ -143,6 +144,23 @@ api.getItems = function (category, callback) {
     });
 };
 
+api.getNewItems = function (callback) {
+
+    var getURL = api.mobileEndpoint;
+
+    request(getURL, function (err, resp, html, rrr, body) {
+
+        if (!err) {
+            const json = JSON.parse(resp.body)
+            console.log(json);
+            callback(json);
+        } else {
+            return callback('No response from website', null);
+        }
+    });
+};
+
+// Not working
 api.getLargestItemID = async () => {
 
     var getURL = 'https://supremenewyork.com/mobile_stock.json';
@@ -169,6 +187,7 @@ api.getLargestItemID = async () => {
 
 };
 
+// Not working
 api.fetchVariants = async (largestSize, amount) => {
 
     // let items = {};
@@ -255,6 +274,8 @@ api.fetchVariants = async (largestSize, amount) => {
     });
 
 }
+
+// Not working
 api.getLargestSizeID = async (largestItemID) => {
 
     var getURL = `https://supremenewyork.com/shop/${largestItemID}.json`;
