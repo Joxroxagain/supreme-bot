@@ -171,7 +171,6 @@ function loadItem(callback) {
 function checkoutItem(callback) {
 
     var body = {
-        "cookie-sub": "%7B%2262899%22%3A1%7D",
         "credit_card[cnb]": "4532 9072 8270 0827",
         "credit_card[month]": "01",
         "credit_card[rsusr]": "333",
