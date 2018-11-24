@@ -1,0 +1,87 @@
+<div class="row">
+  <div class="col-6">
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">Primary</button>
+      <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <a class="dropdown-item" href="#">Item</a>
+        <a class="dropdown-item" href="#">Another item</a>
+        <a class="dropdown-item" href="#">One more item</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Separated item</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">Secondary</button>
+      <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <a class="dropdown-item" href="#">Item</a>
+        <a class="dropdown-item" href="#">Another item</a>
+        <a class="dropdown-item" href="#">One more item</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Separated item</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div id="slider-pips" class="noUi-target noUi-ltr noUi-horizontal" data-toggle="tooltip" data-placement="top" title="Select sizes">
+    <div class="noUi-connect" style="transform: translate(10%, 0px) scale(0, 1);"></div>
+  </div>
+</div>
+
+
+
+<div class="container">
+  <button id='launch' type="button" class="btn btn-outline-primary vbottom mb-5">Launch Tasks</button>
+</div>
+
+
+<script>
+  var noUiSlider = require("nouislider");
+  var ipcRenderer = require("electron").ipcRenderer;
+
+  document.getElementById("launch").addEventListener("click", function () {
+    ipcRenderer.send('start-bot');
+  });
+
+
+  var pipsSlider = document.getElementById('slider-pips');
+
+  noUiSlider.create(pipsSlider, {
+    range: {
+      // Starting at 500, step the value by 500,
+      // until 4000 is reached. From there, step by 1000.
+      'min': [4],
+      'max': [17]
+    },
+    connect: true,
+    step: .5,
+    start: [4, 19],
+    pips: {
+      mode: 'count',
+      values: 14,
+      density: 4,
+      stepped: true
+    }
+  });
+
+  var pips = pipsSlider.querySelectorAll('.noUi-value');
+
+  function clickOnPip() {
+    var value = Number(this.getAttribute('data-value'));
+    pipsSlider.noUiSlider.set(value);
+  }
+
+  for (var i = 0; i < pips.length; i++) {
+
+    // For this example. Do this in CSS!
+    pips[i].style.cursor = 'pointer';
+    pips[i].addEventListener('click', clickOnPip);
+  }
+
+
+</script>
