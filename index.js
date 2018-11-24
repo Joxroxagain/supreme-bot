@@ -16,7 +16,7 @@ function addBots(number) {
 
 function addMonitors(number) {
   for (let i = 0; i < number; i++) {
-    monitors.push(new Monitor());
+    monitors.push(new Monitor(10));
   }
 }
 

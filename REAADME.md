@@ -1,2 +1,0 @@
-# supreme-bot
-Supreme bot
