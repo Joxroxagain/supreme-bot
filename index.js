@@ -36,15 +36,4 @@ const supreme = require('./api.js');
 
 ///////TESTING/////////
 
-(async () => {
-
-  //   console.log("Starting!")
-
-  //   // const id = await supreme.getLargestItemID();
-  const variants = await supreme.fetchVariants("63191", 500);
-
-  //   // console.log("ID:", id)
-  console.log(variants)
-
-})();
 
