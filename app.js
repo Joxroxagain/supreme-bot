@@ -10,7 +10,7 @@ function createWindow() {
   win = new BrowserWindow({ width: 800, height: 600, modal: true, show: false })
 
   // and load the index.html of the app.
-  win.loadURL(`file://${__dirname}/index.html`)
+  win.loadURL(`file://${__dirname}/html/index.html`)
 
   // Open when ready - prevents blank window
   win.once('ready-to-show', () => {
