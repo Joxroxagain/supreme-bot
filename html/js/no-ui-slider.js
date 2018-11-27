@@ -29,7 +29,7 @@ noUiSlider.create(pipsSlider, {
       }
     }
   }
-
+  // Adidas bot size selector options
   // range: {
   //   'min': [4],
   //   'max': [17]

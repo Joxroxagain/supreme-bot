@@ -7,7 +7,7 @@ let win
 
 function createWindow() {
   // Create the browser window.
-  win = new BrowserWindow({ width: 800, height: 600, modal: true, show: false })
+  win = new BrowserWindow({ width: 800, height: 600, modal: true, show: false, icon: `file://${__dirname}/html/img/mouse-icon2.ico`})
 
   // and load the index.html of the app.
   win.loadURL(`file://${__dirname}/html/index.html`)
@@ -16,6 +16,8 @@ function createWindow() {
   win.once('ready-to-show', () => {
     win.show()
   })
+
+  // win.setMenu(null);
 
   // Open the DevTools.
   // win.webContents.openDevTools()
