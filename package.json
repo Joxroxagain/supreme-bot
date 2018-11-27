@@ -20,7 +20,6 @@
     "nouislider": "^12.1.0",
     "popper.js": "^1.14.5",
     "querystring": "^0.2.0",
-    "request": "git+https://github.com/request/request.git",
     "request-cookies": "^1.1.0",
     "request-promise": "^4.2.2",
     "supreme-api": "^1.0.6",
