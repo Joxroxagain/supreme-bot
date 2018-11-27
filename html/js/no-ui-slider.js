@@ -7,23 +7,42 @@ document.getElementById("launch").addEventListener("click", function () {
 
 
 var pipsSlider = document.getElementById('slider-pips');
+var pipFormats = { '0': 'small', '1': 'medium', '2': 'large', '3': 'x-large' };
 
 noUiSlider.create(pipsSlider, {
-  range: {
-    // Starting at 500, step the value by 500,
-    // until 4000 is reached. From there, step by 1000.
-    'min': [4],
-    'max': [17]
-  },
+  start: [0, 4],
   connect: true,
-  step: .5,
-  start: [4, 19],
+  range: {
+    'min': [0, 1],
+    '33%': [1, 1],
+    '66%': [2, 1],
+    'max': [3, 1]
+  },
   pips: {
-    mode: 'count',
-    values: 14,
-    density: 4,
-    stepped: true
+    mode: 'range',
+    values: 4,
+    density: 100,
+    stepped: true,
+    format: {
+      to: function (a) {
+        return pipFormats[a];
+      }
+    }
   }
+
+  // range: {
+  //   'min': [4],
+  //   'max': [17]
+  // },
+  // connect: true,
+  // step: .5,
+  // start: [4, 19],
+  // pips: {
+  //   mode: 'count',
+  //   values: 14,
+  //   density: 4,
+  //   stepped: true
+  // }
 });
 
 var pips = pipsSlider.querySelectorAll('.noUi-value');

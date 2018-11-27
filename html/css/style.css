@@ -179,14 +179,20 @@ ul.CTAs a {
 }
 
 .noUi-connect {
-    background: #000;
+    background: #6c757d;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
 }
 
 form  {
     margin: 60px 0 0 0 !important;
  }
 
- .container {
+.container {
     padding-bottom: 15px;
     padding-top: 15px;
 }
@@ -209,6 +215,16 @@ canvas {
     /* overflow: auto; */
     /* background: lime; Just to visualize the extent */
   }
+
+/* ---------------------------------------------------
+    CONTAINERS
+----------------------------------------------------- */
+
+#slider-container {
+    padding-right: 17px;
+    padding-left: 17px;
+}
+
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
