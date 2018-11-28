@@ -1,5 +1,6 @@
-var Bot = require('./bot.js');
+const Generator = require('./pookygen.js');
 const { app, BrowserWindow } = require('electron')
+const ipcMain = require('electron').ipcMain;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -17,7 +18,7 @@ function createWindow() {
     win.show()
   })
 
-  win.setMenu(null);
+  // win.setMenu(null);
 
   // Open the DevTools.
   // win.webContents.openDevTools()
@@ -52,3 +53,8 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+ipcMain.on('start-bot', function (event, arg) {
+  new Generator().start();
+  // startAll();
+});

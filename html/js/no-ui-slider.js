@@ -1,10 +1,4 @@
 var noUiSlider = require("nouislider");
-var ipcRenderer = require("electron").ipcRenderer;
-
-document.getElementById("launch").addEventListener("click", function () {
-  ipcRenderer.send('start-bot');
-});
-
 
 var pipsSlider = document.getElementById('slider-pips');
 var pipFormats = { '0': 'small', '1': 'medium', '2': 'large', '3': 'x-large' };

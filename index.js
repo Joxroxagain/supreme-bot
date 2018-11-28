@@ -2,7 +2,8 @@ const Bot = require('./bot.js');
 const test = require('./test.js');
 const Monitor = require("./monitor");
 const supreme = require('./api.js');
-var ipcMain = require('electron').ipcMain;
+const Generator = require('./pookygen.js');
+const ipcMain = require('electron').ipcMain;
 
 var bots = [];
 var monitors = [];
@@ -32,15 +33,10 @@ function startAll() {
 // addBots(5);
 // startAll();
 
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-ipcMain.on('start-bot', number, function (event, arg) {
-  addMonitors(number);
-  // startAll();
-
-});
 
 ///////TESTING/////////
-
 
