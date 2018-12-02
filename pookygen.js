@@ -1,9 +1,13 @@
 const puppeteer = require('puppeteer');
 const url = "https://www.supremenewyork.com/";
 
+var queue = [];
+
 class Generator {
 
-    constructor() {
+    static getCookies(obj) {
+        queue.push(obj);
+        console.log(queue);
     }
 
     async start() {
@@ -26,7 +30,7 @@ class Generator {
         const page = await context.newPage();
 
         // Prepare for the tests (not yet implemented).
-        await disableGiveaways(page);
+        await prepareForTests(page);
 
         // Navigate to the page that will perform the tests.
         await page.goto(url, { waitUntil: 'networkidle0' });
@@ -40,8 +44,9 @@ class Generator {
 }
 
 
-
-const disableGiveaways = async (page) => {
+// Hide elements that give away the browser as automation
+// Also disable loading of images and other unnecessary files
+const prepareForTests = async (page) => {
 
     // Pass the User-Agent Test.
     const userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36";

@@ -55,6 +55,5 @@ app.on('activate', () => {
 })
 
 ipcMain.on('start-bot', function (event, arg) {
-  new Generator().start();
-  // startAll();
+  
 });

@@ -26,6 +26,7 @@ module.exports = class Bot {
                 cartItem((response) => {
                     console.log(response.statusCode)
                 });
+                
             hasBeenNotified = true;
 
         });
