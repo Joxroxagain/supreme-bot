@@ -3,6 +3,9 @@
 body {
     font-family: 'Poppins', sans-serif;
     background: #fafafa;
+    margin: 0; 
+    padding: 0;
+    height: 100%;
 }
 
 p {
@@ -187,6 +190,10 @@ ul.CTAs a {
     background-color: #6c757d;
     border-color: #6c757d;
 } */
+
+.ReactTable .rt-thead {
+    overflow-y: scroll;
+}
 
 form  {
     margin: 60px 0 0 0 !important;

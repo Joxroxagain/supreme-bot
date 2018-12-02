@@ -6,19 +6,24 @@ app.config(function($routeProvider) {
   .when('/', {
     templateUrl: 'home.html',
   })
-
-  .when('/about', {
-    templateUrl: 'monitor.html',
+  .when('/tasks', {
+    templateUrl: 'tasks.html',
   })
-
-  .when('/portfolio', {
-    template: '<h1>Portfolio</h1>',
+  .when('/monitors', {
+    template: '<h1>monitors</h1>',
   })
-
-  .when('/contact', {
-    template: '<h1>Contact</h1>',
+  .when('/proxies', {
+    template: '<h1>proxies</h1>',
   })
-
+  .when('/billing', {
+    template: '<h1>billing</h1>',
+  })
+  .when('/options', {
+    template: '<h1>options</h1>',
+  })
+  .when('/license', {
+    template: '<h1>license</h1>',
+  })
 //   .otherwise({redirectTo: '/'});
 });
 
