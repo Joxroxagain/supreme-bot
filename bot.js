@@ -1,9 +1,9 @@
-var cheerio = require('cheerio');
-var request = require('request');
-
-var querystring = require('querystring');
-var events = require('events');
-var notifier = require('./notifier.js')
+const cheerio = require('cheerio');
+const request = require('request');
+const querystring = require('querystring');
+const events = require('events');
+const notifier = require('./notifier.js')
+const Generator = require('./pookygen.js');
 
 
 var cookieJar = request.jar();
@@ -19,17 +19,22 @@ module.exports = class Bot {
         this.url = url;
     }
 
-    start() {
-        notifier.on('items-found', function (item) {
+    async start() {
 
+        // Load cookies
+        const cookies = await Generator.getCookies(function (cookies) {
+            this.cookies = cookies;
+        });
+
+        notifier.on('items-found', function (item) {
             if (!hasBeenNotified)
                 cartItem((response) => {
                     console.log(response.statusCode)
                 });
                 
             hasBeenNotified = true;
-
         });
+
     };
 }
 

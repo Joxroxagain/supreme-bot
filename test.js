@@ -8,30 +8,30 @@ const ipcMain = require('electron').ipcMain;
 var bots = [];
 var monitors = [];
 
-// // Called when user adds nbew tasks
-// function addBots(number) {
-//   for (let i = 0; i < number; i++) {
-//     bots.push(new Bot("171997"));
-//   }
-// }
+// Called when user adds nbew tasks
+function addBots(number) {
+  for (let i = 0; i < number; i++) {
+    bots.push(new Bot("171997"));
+  }
+}
 
-// function addMonitors(number) {
-//   for (let i = 0; i < number; i++) {
-//     monitors.push(new Monitor(10));
-//   }
-// }
+function addMonitors(number) {
+  for (let i = 0; i < number; i++) {
+    monitors.push(new Monitor(10));
+  }
+}
 
-// function startAll() {
-//   for (let i = 0; i < bots.length; i++) {
-//     bots[i].start();
-//   }
-//   for (let i = 0; i < monitors.length; i++) {
-//     monitors[i].start();
-//   }
-// }
+function startAll() {
+  for (let i = 0; i < bots.length; i++) {
+    bots[i].start();
+  }
+  for (let i = 0; i < monitors.length; i++) {
+    monitors[i].start();
+  }
+}
 
-// addBots(5);
-// startAll();
+addBots(5);
+startAll();
 
 
 // In this file you can include the rest of your app's specific main process
@@ -39,8 +39,8 @@ var monitors = [];
 
 
 ///////TESTING/////////
-(async() => {
-    const cookies = await Generator.getCookies(function(cookies) {
-        console.log(cookies);
-    });
-})();
+// (async () => {
+//     const cookies = await Generator.getCookies(function (cookies) {
+//         console.log(cookies);
+//     });
+// })();

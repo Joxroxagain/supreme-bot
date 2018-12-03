@@ -15,7 +15,7 @@ class Generator {
         if (!isStarted) await startBrowser();
 
         // Push a new job onto the queue 
-        queue.push(await getCookie(function(sessionCookies) {
+        queue.push(await getCookie(function (sessionCookies) {
             cb(sessionCookies);
         }));
 
@@ -193,25 +193,25 @@ async function getCookie(cb) {
     const context = await browser.createIncognitoBrowserContext();
 
     const page = await context.newPage();
-    
+
     // Prepare for the tests (not yet implemented).
     await prepareForTests(page);
-    
+
     // Navigate to the page that will perform the tests.
     await page.goto(url, { waitUntil: 'networkidle0' });
-    
-    const innerWidth = await page.evaluate(_ => {return window.innerWidth})
-    const innerHeight = await page.evaluate(_ => {return window.innerHeight})
-    
+
+    const innerWidth = await page.evaluate(_ => { return window.innerWidth })
+    const innerHeight = await page.evaluate(_ => { return window.innerHeight })
+
     const mouse = page.mouse
-    await mouse.move(innerWidth/2, innerHeight/2)
+    await mouse.move(innerWidth / 2, innerHeight / 2)
     // await mouse.down()
-    await mouse.move(innerWidth/2+200, innerHeight/2, {steps: 100})
+    await mouse.move(innerWidth / 2 + 200, innerHeight / 2, { steps: 100 })
     // await mouse.up()
     // await page.waitForNavigation({waitUntil: 'networkidle0'})
-    
+
     const sessionCookies = await page.cookies();
-    
+
     cb(sessionCookies);
 
     await page.close();
