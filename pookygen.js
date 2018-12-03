@@ -2,42 +2,15 @@ const puppeteer = require('puppeteer');
 const url = "https://www.supremenewyork.com/";
 
 var queue = [];
+var isStarted = false;
+var browser;
+var page;
 
 class Generator {
 
-    static getCookies(obj) {
-        queue.push(obj);
-        console.log(queue);
-    }
-
-    async start() {
-
-        // Launch the browser in headless mode and set up a page.
-        const browser = await puppeteer.launch({
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage',
-                '--disable-accelerated-2d-canvas',
-                '--disable-gpu',
-                '--window-size=1920x1080',
-            ],
-            headless: false,
-        });
-
-        const context = await browser.createIncognitoBrowserContext();
-
-        const page = await context.newPage();
-
-        // Prepare for the tests (not yet implemented).
-        await prepareForTests(page);
-
-        // Navigate to the page that will perform the tests.
-        await page.goto(url, { waitUntil: 'networkidle0' });
-
-        const sessionCookies = await page.cookies();
-
-        console.log(sessionCookies);
+    static async getCookies(obj) {
+        queue.push(obj.toString());
+        if (!isStarted) await start();
         
     }
 
@@ -183,5 +156,29 @@ const prepareForTests = async (page) => {
 
 }
 
+async function start() {
+    isStarted = true;
+
+    // Launch the browser in headless mode and set up a page.
+    browser = await puppeteer.launch({
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--disable-gpu',
+            '--window-size=1920x1080',
+        ],
+        headless: false,
+    });
+
+    const context = await browser.createIncognitoBrowserContext();
+
+    page = await context.newPage();
+
+    // Prepare for the tests (not yet implemented).
+    await prepareForTests(page);
+
+}
 
 module.exports = Generator;

@@ -8,6 +8,9 @@ const ipcMain = require('electron').ipcMain;
 var bots = [];
 var monitors = [];
 
+
+
+
 // // Called when user adds nbew tasks
 // function addBots(number) {
 //   for (let i = 0; i < number; i++) {
@@ -39,4 +42,14 @@ var monitors = [];
 
 
 ///////TESTING/////////
-Generator.getCookies(this);
+function Test() {
+    Generator.getCookies(this);
+}
+
+
+Test.prototype.toString = function toString() {
+    return "anusmeat";
+}
+
+Test();
+
