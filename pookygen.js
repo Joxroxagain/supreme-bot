@@ -1,17 +1,24 @@
 const puppeteer = require('puppeteer');
+var queue = require('queue');
+
 const url = "https://www.supremenewyork.com/";
 
-var queue = [];
+var queue = queue();
+
 var isStarted = false;
 var browser;
-var page;
 
 class Generator {
 
-    static async getCookies(obj) {
-        queue.push(obj.toString());
-        if (!isStarted) await start();
-        
+    static async getCookies(cb) {
+        //Start browser if not already running
+        if (!isStarted) await startBrowser();
+
+        // Push a new job onto the queue 
+        queue.push(await getCookie(function(sessionCookies) {
+            cb(sessionCookies);
+        }));
+
     }
 
 }
@@ -156,7 +163,7 @@ const prepareForTests = async (page) => {
 
 }
 
-async function start() {
+async function startBrowser() {
     isStarted = true;
 
     // Launch the browser in headless mode and set up a page.
@@ -172,12 +179,43 @@ async function start() {
         headless: false,
     });
 
+
+}
+
+async function stopBrowser() {
+    isStarted = false;
+    // Stop the browser
+    await browser.close();
+}
+
+async function getCookie(cb) {
+
     const context = await browser.createIncognitoBrowserContext();
 
-    page = await context.newPage();
-
+    const page = await context.newPage();
+    
     // Prepare for the tests (not yet implemented).
     await prepareForTests(page);
+    
+    // Navigate to the page that will perform the tests.
+    await page.goto(url, { waitUntil: 'networkidle0' });
+    
+    const innerWidth = await page.evaluate(_ => {return window.innerWidth})
+    const innerHeight = await page.evaluate(_ => {return window.innerHeight})
+    
+    const mouse = page.mouse
+    await mouse.move(innerWidth/2, innerHeight/2)
+    // await mouse.down()
+    await mouse.move(innerWidth/2+200, innerHeight/2, {steps: 100})
+    // await mouse.up()
+    // await page.waitForNavigation({waitUntil: 'networkidle0'})
+    
+    const sessionCookies = await page.cookies();
+    
+    cb(sessionCookies);
+
+    await page.close();
+
 
 }
 
