@@ -30,7 +30,7 @@ function startAll() {
   }
 }
 
-addBots(5);
+addBots(1);
 startAll();
 
 
@@ -40,7 +40,20 @@ startAll();
 
 ///////TESTING/////////
 // (async () => {
-//     const cookies = await Generator.getCookies(function (cookies) {
-//         console.log(cookies);
-//     });
+//   var Queue = require('better-queue');
+
+//   var q = new Queue(function (input, cb) {
+
+//     console.log(input)
+
+//     cb(null, result);
+//   }, { concurrent: 1 })
+
+//   q.push(1)
+//   q.push({ x: 1 })
+//   q.push(1)
+//   q.push({ x: 1 }) 
+//   q.push({ x: 1 })  
+//   q.push({ x: 1 }) 
+//   q.push({ x: 1 })
 // })();

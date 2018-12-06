@@ -1,18 +1,18 @@
 const cheerio = require('cheerio');
-const request = require('request');
+var request = require('request-promise');
 const querystring = require('querystring');
 const events = require('events');
 const notifier = require('./notifier.js')
 const Generator = require('./pookygen.js');
+var tough = require('tough-cookie');
 
 
 var cookieJar = request.jar();
-var request = request.defaults({jar: true})
+var request = request.defaults({ jar: true })
 
 var url;
 var hasBeenNotified = false;
 var item;
-var cookies;
 
 module.exports = class Bot {
     constructor(url) {
@@ -22,16 +22,29 @@ module.exports = class Bot {
     async start() {
 
         // Load cookies
-        const cookies = await Generator.getCookies(function (cookies) {
-            this.cookies = cookies;
+        await Generator.getCookies(function (sessionCookies) {
+            for (var i = 0; i < sessionCookies.length; i++) {
+                // Easy creation of the cookie - see tough-cookie docs for details
+                let cookie = new tough.Cookie({
+                    key: sessionCookies[i].name,
+                    value: sessionCookies[i].value,
+                    domain: sessionCookies[i].domain,
+                    maxAge: -1
+                });
+
+                cookieJar.setCookie(cookie, sessionCookies[i].domain);
+
+            }
+
         });
 
+        // Wait for drop
         notifier.on('items-found', function (item) {
             if (!hasBeenNotified)
                 cartItem((response) => {
                     console.log(response.statusCode)
                 });
-                
+
             hasBeenNotified = true;
         });
 
@@ -158,7 +171,7 @@ function cartItem(callback) {
             // });
             // console.log(cookieJar.getCookies(url));
             callback(response);
-            
+
         } else {
             console.log(error);
         }

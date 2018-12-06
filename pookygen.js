@@ -1,27 +1,81 @@
 const puppeteer = require('puppeteer');
-var queue = require('queue');
+var Queue = require('better-queue');
 
-const url = "https://www.supremenewyork.com/";
-
-var queue = queue();
-
+const url = "https://www.supremenewyork.com/news";
 var isStarted = false;
 var browser;
 
 class Generator {
 
-    static async getCookies(cb) {
-        //Start browser if not already running
-        if (!isStarted) await startBrowser();
-
-        // Push a new job onto the queue 
-        queue.push(await getCookie(function (sessionCookies) {
-            cb(sessionCookies);
-        }));
+    constructor() {
 
     }
 
+    static async getCookies(cb) {
+
+        // Push a new job onto the queue 
+        // q.push(await getCookie(function (sessionCookies) {
+        //     cb(sessionCookies);
+        // }));
+        console.log("Pushing")
+        this.Q.push(1, cb)
+            .on('finish', function (result) {
+                // Task succeeded with {result}!
+            })
+            .on('failed', function (err) {
+                // Task failed!
+            })
+
+        // console.log(this.Q.getStats());
+    }
+
 }
+
+Generator.Q = new Queue(async function (input, cb) {
+
+    // Start browser if not already running
+    if (browser == null) await startBrowser();
+
+    const context = await browser.createIncognitoBrowserContext();
+
+    const page = await context.newPage();
+
+    // Prepare for the tests (not yet implemented).
+    await prepareForTests(page);
+
+    // Navigate to the page that will perform the tests.
+    await page.goto(url, { waitUntil: 'load' });
+
+    await page.click('.shop_link');
+
+    // Loop until pooky_pro cookie is found
+    var found = false;
+    while (!found) {
+        await page.waitFor(1000)
+
+        var sessionCookies = await page.cookies();
+
+        for (var i = 0; i < sessionCookies.length; i++) {
+            if (sessionCookies[i].name == 'pooky_pro') {
+                found = true;
+                break;
+            }
+        }
+    }
+
+    await page.close();
+
+    cb(sessionCookies, 'finish');
+
+}, { concurrent: 1 });
+
+Generator.Q.on('drain', async function () {
+    // Stop the browser
+    await browser.close();
+    isStarted = false;
+
+})
+
 
 
 // Hide elements that give away the browser as automation
@@ -164,7 +218,6 @@ const prepareForTests = async (page) => {
 }
 
 async function startBrowser() {
-    isStarted = true;
 
     // Launch the browser in headless mode and set up a page.
     browser = await puppeteer.launch({
@@ -179,43 +232,7 @@ async function startBrowser() {
         headless: false,
     });
 
-
-}
-
-async function stopBrowser() {
-    isStarted = false;
-    // Stop the browser
-    await browser.close();
-}
-
-async function getCookie(cb) {
-
-    const context = await browser.createIncognitoBrowserContext();
-
-    const page = await context.newPage();
-
-    // Prepare for the tests (not yet implemented).
-    await prepareForTests(page);
-
-    // Navigate to the page that will perform the tests.
-    await page.goto(url, { waitUntil: 'networkidle0' });
-
-    const innerWidth = await page.evaluate(_ => { return window.innerWidth })
-    const innerHeight = await page.evaluate(_ => { return window.innerHeight })
-
-    const mouse = page.mouse
-    await mouse.move(innerWidth / 2, innerHeight / 2)
-    // await mouse.down()
-    await mouse.move(innerWidth / 2 + 200, innerHeight / 2, { steps: 100 })
-    // await mouse.up()
-    // await page.waitForNavigation({waitUntil: 'networkidle0'})
-
-    const sessionCookies = await page.cookies();
-
-    cb(sessionCookies);
-
-    await page.close();
-
+    isStarted = true;
 
 }
 
