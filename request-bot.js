@@ -22,30 +22,36 @@ module.exports = class Bot {
     async start() {
 
         // Load cookies
-        await Generator.getCookies(function (sessionCookies) {
-            for (var i = 0; i < sessionCookies.length; i++) {
-                // Easy creation of the cookie - see tough-cookie docs for details
-                let cookie = new tough.Cookie({
-                    key: sessionCookies[i].name,
-                    value: sessionCookies[i].value,
-                    domain: sessionCookies[i].domain,
-                    maxAge: -1
-                });
+        // await Generator.getCookies(function (sessionCookies) {
+        //     console.log(sessionCookies)
+        //     for (var i = 0; i < sessionCookies.length; i++) {
+        //         console.log(sessionCookies[i].name)
 
-                cookieJar.setCookie(cookie, sessionCookies[i].domain);
+        //         // Easy creation of the cookie - see tough-cookie docs for details
+        //         // let cookie = new tough.Cookie({
+        //         //     key: sessionCookies[i].name,
+        //         //     value: sessionCookies[i].value,
+        //         //     domain: sessionCookies[i].domain,
+        //         //     maxAge: -1
+        //         // });
 
-            }
+        //         // cookieJar.setCookie(cookie, sessionCookies[i].domain);
 
-        });
+        //     }
+
+        // });
 
         // Wait for drop
-        notifier.on('items-found', function (item) {
+        notifier.on('new-items', function (item) {
+
             if (!hasBeenNotified)
-                cartItem((response) => {
-                    console.log(response.statusCode)
-                });
+
+                // cartItem((response) => {
+                //     console.log(response.statusCode)
+                // });
 
             hasBeenNotified = true;
+
         });
 
     };

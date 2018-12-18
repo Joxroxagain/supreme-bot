@@ -30,7 +30,6 @@ api.getNewItems = function (callback) {
 
         if (!err) {
             const json = JSON.parse(resp.body);
-            console.log(json.products_and_categories.new);
             callback(json.products_and_categories.new);
         } else {
             return callback('No response from website', null);

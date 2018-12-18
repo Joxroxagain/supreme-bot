@@ -13,11 +13,7 @@ class Generator {
 
     static async getCookies(cb) {
 
-        // Push a new job onto the queue 
-        // q.push(await getCookie(function (sessionCookies) {
-        //     cb(sessionCookies);
-        // }));
-        console.log("Pushing")
+
         this.Q.push(1, cb)
             .on('finish', function (result) {
                 // Task succeeded with {result}!
@@ -26,7 +22,6 @@ class Generator {
                 // Task failed!
             })
 
-        // console.log(this.Q.getStats());
     }
 
 }

@@ -4,43 +4,47 @@ var querystring = require('querystring');
 const api = require('./api.js');
 var notifier = require('./notifier.js')
 
-var watchOnAllItems = [];
+var running = [];
 var refreshInterval;
 var previousReturn;
 
 
 module.exports = class Monitor {
 
-    constructor(interval) {
-        this.refreshInterval = interval;
+    constructor(options) {
+        this.refreshInterval = options.interval;
     }
 
     start() {
-        console.log("started watching for items!")
 
-        watchOnAllItems = setInterval(function () {
-            api.getNewItems(function (thisReturn) {
-                if (previousReturn == null) {
-                    previousReturn = thisReturn;
-                } else {
-                    if(JSON.stringify(previousReturn) == JSON.stringify(thisReturn)) {
-                        console.log("SAME THING!")
-                    } else {
-                        console.log("NEW ITEMS! OMG")
-                    }
+        // Stop monitoring once new items are found
+        notifier.on('new-items', () => {
+            this.stopMonitoring();
+        });
+
+        running = setInterval(function () {
+            api.getNewItems(function (str) {
+                var thisReturn = JSON.stringify(str);
+
+                if (previousReturn == thisReturn){
+                    //Emit the new JSON once it is availible
+                    notifier.emit('new-items', thisReturn);
                 }
+
+                previousReturn = thisReturn;
+
             });
         }, 1000 * this.refreshInterval); // Every xx sec
 
     }
 
-    stop(callback) {
-        clearInterval(watchOnAllItems);
-        if (watchOnAllItems == "") {
-            callback(null, 'No watching processes found.');
-        } else {
-            callback('Watching has stopped.', null);
-        }
+    stopMonitoring(callback) {
+        clearInterval(running);
+        // if (running == "") {
+        //     callback(null, 'No watching processes found.');
+        // } else {
+        //     callback('Watching has stopped.', null);
+        // }
 
     }
 
