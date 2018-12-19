@@ -46,9 +46,9 @@ module.exports = class Bot {
 
             if (!hasBeenNotified)
 
-                // cartItem((response) => {
-                //     console.log(response.statusCode)
-                // });
+                cartItem((response) => {
+                    // console.log(response)
+                });
 
             hasBeenNotified = true;
 
@@ -134,8 +134,8 @@ function getItem(itemURL, callback) {
 function cartItem(callback) {
 
     var body = {
-        "s": "62903",
-        "st": "22374",
+        "s": "63029",
+        "st": "22422",
         "qty": "1"
     };
 
@@ -158,7 +158,7 @@ function cartItem(callback) {
 
     // Configure the request
     var options = {
-        url: "https://www.supremenewyork.com/shop/171983/add.json",
+        url: "https://www.supremenewyork.com/shop/171995/add.json",
         method: 'POST',
         headers: headers,
         body: formData,
@@ -169,15 +169,14 @@ function cartItem(callback) {
     request(options, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             // Print out the response body
-            // console.log(response.statusCode);
-            // console.log(response.headers['set-cookie']);
-            // const cookies = response.headers['set-cookie'] || [];
+            console.log(response.statusCode);
+            console.log(response.headers['set-cookie']);
+            const cookies = response.headers['set-cookie'] || [];
             // cookies.forEach(c => {
             //     cookieJar.setCookie(c, url);
             // });
             // console.log(cookieJar.getCookies(url));
             callback(response);
-
         } else {
             console.log(error);
         }
