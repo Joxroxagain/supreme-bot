@@ -22,16 +22,20 @@ module.exports = class Monitor {
             this.stop();
         });
 
-        this.interval = setInterval(getStock, 1000 * this.refreshInterval)
+        if ((Date.now() - this.releaseDate) >= 0) {
+            this.interval = setInterval(getStock, 500)
+        } else {
+            const int = setInterval(() => {
+                if ((Date.now() - this.releaseDate) >= 0) {
+                    console.log('Release time reached! Checking mobile stock more often now...')
+                    this.stop();
+                    clearInterval(int)
+                    this.interval = setInterval(getStock, 500)
+                }
+            }, 10)
 
-        const int = setInterval(() => {
-            if ((Date.now() - this.releaseDate) >= 0) {
-                console.log('Release time reached! Checking mobile stock more often now...')
-                this.stop();
-                clearInterval(int)
-                this.interval = setInterval(getStock, 500)
-            }
-        }, 10)
+            this.interval = setInterval(getStock, 1000 * this.refreshInterval)
+        }
 
     }
 
@@ -48,7 +52,7 @@ async function getStock() {
         console.log(`Error parsing json from ${api.mobileEndpoint}: result was null!`)
     } else {
         var thisReturn = JSON.stringify(resp);
-        if (previousReturn != thisReturn && typeof previousReturn != 'undefined') {
+        if (previousReturn != thisReturn /*&& typeof previousReturn != 'undefined'*/) {
             //Emit the new JSON once it is availible
             notifier.emit('new-items', resp);
         }

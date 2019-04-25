@@ -20,7 +20,7 @@ class Bot {
     constructor(options) {
         this.page = null;
         this.browser = null;
-        this.keyword = options.keyword;
+        this.keyword = options.keyword.toLowerCase();
     }
 
     async prepare() {
@@ -35,7 +35,7 @@ class Bot {
         this.page = (await this.browser.pages())[0];
 
         // Set viewport size (may not be needed)
-        // await this.page.setViewport({ width: userAgent.data.viewportWidth, height: userAgent.data.viewportHeight })
+        // await this.page.setViewport({ width: userAgent.data.viewportWid th, height: userAgent.data.viewportHeight })
 
         // Set user agent
         await this.page.setUserAgent(userAgent.toString());
@@ -46,6 +46,7 @@ class Bot {
 
         notifier.once('new-items', (items) => {
             var bogos = items.filter(d => d.name.includes(this.keyword))
+            console.log(bogos) 
             this.checkout(`https://www.supremenewyork.com/mobile/#products/${bogos[0].id}`)
             return;
         });
@@ -56,6 +57,7 @@ class Bot {
     }
 
     async checkout(url) {
+        var startTime = Date.now()
 
         await this.page.goto(url, { waitUntil: 'domcontentloaded' });
 
@@ -124,6 +126,7 @@ class Bot {
     
         await this.page.evaluate(async () => { recaptchaCallback() })
 
+        console.log(`Checkout time: ${ Date.now() - startTime }ms`)
     }
 
 }

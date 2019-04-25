@@ -39,11 +39,25 @@ api.getNewItems = async function () {
             method: "POST",
             mode: "cors"
         })
-        return (JSON.parse(await resp.text())).products_and_categories.new;
+
+        const text = lower(await resp.json())
+        return text.products_and_categories.new;
     } catch (err) {
         return null;
     }
 };
+
+function lower(obj) {
+    for (var prop in obj) {
+        if (typeof obj[prop] === 'string') {
+            obj[prop] = obj[prop].toLowerCase();
+        }
+        if (typeof obj[prop] === 'object') {
+            lower(obj[prop]);
+        }
+    }
+    return obj;
+}
 
 // Not working
 api.getLargestItemID = async () => {

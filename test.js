@@ -5,12 +5,12 @@ const Monitor = require("./monitor");
 var bots = [];
 var monitors = [];
 
-const releaseDate = new Date("April 25, 2019, 11:00");
+const releaseDate = new Date("");
 
 // Called when user adds nbew tasks
 function addBots(number) {
   for (let i = 0; i < number; i++) {
-    bots.push(new BrowserBot({ keyword: 'box' }));
+    bots.push(new BrowserBot({ keyword: 'contrast' }));
   }
 }
 
