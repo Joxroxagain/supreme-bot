@@ -1,6 +1,6 @@
 var cheerio = require('cheerio');
-const request = require("request-promise");
 var querystring = require('querystring');
+const fetch = require('node-fetch');
 
 var api = {};
 
@@ -24,27 +24,33 @@ String.prototype.capitalizeEachWord = function () {
  * @return {Array}
  */
 
-api.getNewItems = function (callback) {
-
-    request(api.mobileEndpoint, function (err, resp, html, rrr, body) {
-
-        if (!err) {
-            const json = JSON.parse(resp.body);
-            callback(json.products_and_categories.new);
-        } else {
-            return callback('No response from website', null);
-        }
-    });
+api.getNewItems = async function () {
+    try {
+        const resp = await fetch(api.mobileEndpoint, {
+            credentials: "include",
+            headers: {
+                "accept": "application/json",
+                "accept-language": "en-US,en;q=0.9,fr;q=0.8",
+                "content-type": "application/x-www-form-urlencoded",
+                "x-requested-with": "XMLHttpRequest"
+            },
+            referrer: "https://www.supremenewyork.com/mobile/",
+            referrerPolicy: "no-referrer-when-downgrade",
+            method: "POST",
+            mode: "cors"
+        })
+        return (JSON.parse(await resp.text())).products_and_categories.new;
+    } catch (err) {
+        return null;
+    }
 };
 
 // Not working
 api.getLargestItemID = async () => {
 
-    var getURL = 'https://supremenewyork.com/mobile_stock.json';
-
     return new Promise(function (resolve, reject) {
 
-        request(getURL, async (err, resp, html, rrr, body) => {
+        request(api.mobileEndpoint, async (err, resp, html, rrr, body) => {
             let largestProductID = 0;
             const json = JSON.parse(resp.body);
             if (!err) {
@@ -82,7 +88,7 @@ api.fetchVariants = async (largestSize, amount) => {
         "credit_card[year]": "2023",
         "from_mobile": "1",
         "g-recaptcha-response": "",
-        "order[billing_address]": "23e2e 2332 2fde  ed e",
+        "order[billing_address]": "",
         "order[billing_address_2]": "",
         "order[billing_city]": "Efland",
         "order[billing_country]": "USA",
@@ -92,8 +98,8 @@ api.fetchVariants = async (largestSize, amount) => {
         "order[email]": "jox.rox.js@gmail.com",
         "order[tel]": "919-928-1202",
         "order[terms]": [
-          "0",
-          "1"
+            "0",
+            "1"
         ],
         "same_as_billing_address": "1",
         "store_credit_id": ""
@@ -118,7 +124,7 @@ api.fetchVariants = async (largestSize, amount) => {
 
     // Configure the request
     var options = {
-        url: 'https://www.supremenewyork.com/checkout.json',
+        url: api.mobileEndpoint,
         method: 'POST',
         headers: headers,
         body: formData
@@ -129,7 +135,7 @@ api.fetchVariants = async (largestSize, amount) => {
         if (!error && response.statusCode === 200) {
 
             const data = JSON.parse(response.body);
-            
+
             console.log(data);
 
             let variants = [];

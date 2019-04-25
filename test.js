@@ -1,33 +1,30 @@
 const RequestBot = require('./request-bot.js');
-const test = require('./test.js');
+const BrowserBot = require('./browser-bot.js');
 const Monitor = require("./monitor");
-const supreme = require('./api.js');
-const Generator = require('./pookygen.js');
-const ipcMain = require('electron').ipcMain;
 
 var bots = [];
 var monitors = [];
 
+const releaseDate = new Date("April 25, 2019, 11:00");
+
 // Called when user adds nbew tasks
 function addBots(number) {
   for (let i = 0; i < number; i++) {
-    bots.push(new RequestBot("171997"));
+    bots.push(new BrowserBot({ keyword: 'box' }));
   }
 }
 
 function addMonitors(number) {
   for (let i = 0; i < number; i++) {
-    monitors.push(new Monitor({interval: 1}));
+    monitors.push(new Monitor({ interval: 2, date: releaseDate }));
   }
 }
 
 function startAll() {
-  for (let i = 0; i < bots.length; i++) {
-    bots[i].start();
-  }
-  for (let i = 0; i < monitors.length; i++) {
-    monitors[i].start();
-  }
+
+  monitors.forEach(element => { element.start() });
+  bots.forEach(element => { element.prepare() });
+
 }
 
 addMonitors(1);
